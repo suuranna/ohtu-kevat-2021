@@ -3,69 +3,48 @@ OLETUSKASVATUS = 5
 
 
 class IntJoukko:
-    def __init__(self, kapasiteetti=None, kasvatuskoko=None):
-        if kapasiteetti is None:
-            self.kapasiteetti = KAPASITEETTI
-        elif not isinstance(kapasiteetti, int) or kapasiteetti < 0:
-            raise Exception("Väärä kapasiteetti")  # heitin vaan jotain :D
-        else:
-            self.kapasiteetti = kapasiteetti
-
-        if kasvatuskoko is None:
-            self.kasvatuskoko = OLETUSKASVATUS
-        elif not isinstance(kapasiteetti, int) or kapasiteetti < 0:
-            raise Exception("kapasiteetti2")  # heitin vaan jotain :D
-        else:
-            self.kasvatuskoko = kasvatuskoko
-
-        self.ljono = [0] * self.kapasiteetti
-
+    def __init__(self, kapasiteetti=KAPASITEETTI, kasvatuskoko=OLETUSKASVATUS):
+        if not isinstance(kapasiteetti, int) or not isinstance(kasvatuskoko, int):
+            raise Exception("Väärä kapasiteetti tai kasvatuskoko")
+        self.kapasiteetti = kapasiteetti
+        self.kasvatuskoko = kasvatuskoko
+        self.joukko = [0] * self.kapasiteetti
         self.alkioiden_lkm = 0
 
-    def kuuluu(self, n):
-        on = 0
-
+    def kuuluuko_joukkoon(self, n):
         for i in range(0, self.alkioiden_lkm):
-            if n == self.ljono[i]:
-                on = on + 1
+            if n == self.joukko[i]:
+                return True
+        return False
 
-        if on > 0:
-            return True
-        else:
-            return False
-
-    def lisaa(self, n):
-        ei_ole = 0
-
+    def lisaa_joukkoon(self, n):
         if self.alkioiden_lkm == 0:
-            self.ljono[0] = n
-            self.alkioiden_lkm = self.alkioiden_lkm + 1
+            self.joukko[0] = n
+            self.alkioiden_lkm += 1
             return True
         else:
             pass
 
-        if not self.kuuluu(n):
-            self.ljono[self.alkioiden_lkm] = n
-            self.alkioiden_lkm = self.alkioiden_lkm + 1
+        if not self.kuuluuko_joukkoon(n):
+            self.joukko[self.alkioiden_lkm] = n
+            self.alkioiden_lkm += 1
 
-            if self.alkioiden_lkm % len(self.ljono) == 0:
-                taulukko_old = self.ljono
-                self.kopioi_taulukko(self.ljono, taulukko_old)
-                self.ljono = [0] * (self.alkioiden_lkm + self.kasvatuskoko)
-                self.kopioi_taulukko(taulukko_old, self.ljono)
+            if self.alkioiden_lkm % len(self.joukko) == 0:
+                taulukko_old = self.joukko
+                self.kopioi_taulukko(self.joukko, taulukko_old)
+                self.joukko = [0] * (self.alkioiden_lkm + self.kasvatuskoko)
+                self.kopioi_taulukko(taulukko_old, self.joukko)
 
             return True
 
         return False
 
     def poista(self, n):
-        kohta = -1
         apu = 0
 
         for i in range(0, self.alkioiden_lkm):
-            if n == self.ljono[i]:
-                kohta = i  # siis luku löytyy tuosta kohdasta :D
-                self.ljono[kohta] = 0
+            if self.kuuluuko_joukkoon(n):
+                self.joukko[i] = 0
                 break
 
         if kohta != -1:

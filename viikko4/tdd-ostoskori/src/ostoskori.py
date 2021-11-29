@@ -9,15 +9,19 @@ class Ostoskori:
         # ostoskori tallettaa Ostos-oliota, yhden per korissa oleva Tuote
 
     def tavaroita_korissa(self):
-        return self.maara
+        maara = 0
+        for ostos in self._ostokset:
+            maara = maara + ostos._lukumaara
+        return maara
         # kertoo korissa olevien tavaroiden lukumäärän
         # eli jos koriin lisätty 2 kpl tuotetta "maito", tulee metodin palauttaa 2 
         # samoin jos korissa on 1 kpl tuotetta "maito" ja 1 kpl tuotetta "juusto", tulee metodin palauttaa 2 
 
     def hinta(self):
-        if len(self._ostokset) == 0:
-            return 0
-        return self.koko_hinta
+        hinta = 0
+        for ostos in self._ostokset:
+            hinta = hinta + ostos.hinta()
+        return hinta
         # kertoo korissa olevien ostosten yhteenlasketun hinnan
 
     def lisaa_tuote(self, lisattava: Tuote):
@@ -26,26 +30,17 @@ class Ostoskori:
         for ostos in self._ostokset:
             if ostos.tuote.nimi == ostos1.tuote.nimi and ostos.tuote.hinta == ostos1.tuote.hinta:
                 ostos.muuta_lukumaaraa(1)
-                self.maara += 1
-                self.koko_hinta += ostos.tuote._hinta
                 return
         self._ostokset.append(ostos1)
-        self.maara += 1
-        self.koko_hinta += ostos1.tuote._hinta
-
 
     def poista_tuote(self, poistettava: Tuote):
         ostos2 = Ostos(poistettava)
         for ostos in self._ostokset:
             if ostos2.tuotteen_nimi() == ostos.tuotteen_nimi():
                 if ostos.lukumaara() == 1:
-                    self.maara -= 1
-                    self.koko_hinta -= ostos.hinta()
                     self._ostokset.remove(ostos)
                 else:
                     ostos.muuta_lukumaaraa(-1)
-                    self.maara -= 1
-                    self.koko_hinta -= ostos.hinta()
 
     def tyhjenna(self):
         self._ostokset.clear()

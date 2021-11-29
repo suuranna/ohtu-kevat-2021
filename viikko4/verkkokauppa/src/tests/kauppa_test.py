@@ -34,8 +34,8 @@ class TestKauppa(unittest.TestCase):
                 return Tuote(1, "maito", 5)
 
         # otetaan toteutukset käyttöön
-        varasto_mock.saldo.side_effect = varasto_saldo
-        varasto_mock.hae_tuote.side_effect = varasto_hae_tuote
+        varasto_mock.saldo.side_effect = varasto_saldo(1)
+        varasto_mock.hae_tuote.side_effect = varasto_hae_tuote(1)
 
         # alustetaan kauppa
         kauppa = Kauppa(varasto_mock, pankki_mock, viitegeneraattori_mock)
@@ -50,8 +50,10 @@ class TestKauppa(unittest.TestCase):
         # toistaiseksi ei välitetä kutsuun liittyvistä argumenteista
 
     def test_asiointi_toimii_oikein(self):
+        tuote_mock = Mock()
+        tuote_mock.id = 1
         self.kauppa.aloita_asiointi()
-        self.kauppa.lisaa_koriin(1)
+        self.kauppa.lisaa_koriin(tuote_mock.id)
         self.kauppa.tilimaksu("pekka", "12345")
         pankki_mock.tilisiirto.assert_called_with("pekka", "12345")
 

@@ -48,7 +48,7 @@ class Ostoskori:
                     self.koko_hinta -= ostos.hinta()
 
     def tyhjenna(self):
-        pass
+        self._ostokset.clear()
         # tyhjentää ostoskorin
 
     def ostokset(self):

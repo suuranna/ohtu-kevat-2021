@@ -22,7 +22,19 @@ class Ostoskori:
 
     def lisaa_tuote(self, lisattava: Tuote):
         # lisää tuotteen
-        pass
+        print("yaas")
+        ostos1 = Ostos(lisattava)
+        for ostos in self.ostokset:
+            if ostos.tuote.nimi == ostos1.tuote.nimi and ostos.tuote.hinta == ostos1.tuote.hinta:
+                ostos.muuta_lukumaaraa(1)
+                self.maara += 1
+                self.koko_hinta += ostos.tuote.hinta
+                return
+        self.ostokset.append(ostos1)
+        self.maara += 1
+        print(self.ostokset)
+        self.koko_hinta += ostos1.tuote._hinta
+
 
     def poista_tuote(self, poistettava: Tuote):
         # poistaa tuotteen

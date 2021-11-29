@@ -28,7 +28,7 @@ class Ostoskori:
             if ostos.tuote.nimi == ostos1.tuote.nimi and ostos.tuote.hinta == ostos1.tuote.hinta:
                 ostos.muuta_lukumaaraa(1)
                 self.maara += 1
-                self.koko_hinta += ostos.tuote.hinta
+                self.koko_hinta += ostos.tuote._hinta
                 return
         self.ostokset.append(ostos1)
         self.maara += 1

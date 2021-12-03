@@ -16,4 +16,3 @@ print("Goodbye")
 
 
 #muokattu
-#muokattu

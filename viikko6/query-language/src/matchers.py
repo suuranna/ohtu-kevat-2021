@@ -52,3 +52,16 @@ class All:
 
     def matches(self, player):
         return True
+
+class Or:
+    def __init__(self, *matchers):
+        self._matchers = matchers
+    
+    def matches(self, player):
+        return_value = False
+        for matcher in self._matchers:
+            if matcher.matches(player):
+                return_value = True
+
+        return return_value
+
